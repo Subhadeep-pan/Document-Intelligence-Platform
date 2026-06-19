@@ -7,7 +7,7 @@ def create_embeddings(chunks):
     embeddings = []
     for chunk in chunks:
         result = genai.embed_content(
-            model="models/text-embedding-004",
+            model="models/embedding-001",  # ← change this line
             content=chunk
         )
         embeddings.append(result["embedding"])

@@ -11,13 +11,13 @@ def retrieve_context(question):
     )
     query_embedding = result["embedding"]
 
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=5
+    result = genai.embed_content(
+    model="models/embedding-001",  # ← change this line
+    content=question
     )
 
-    documents = results["documents"][0]
-    metadatas = results["metadatas"][0]
+    documents = result["documents"][0]
+    metadatas = result["metadatas"][0]
 
     context = "\n".join(documents)
 
