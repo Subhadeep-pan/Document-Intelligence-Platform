@@ -1,0 +1,57 @@
+name: CI - Test Backend
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Check for syntax errors
+        run: |
+          python -m py_compile backend/app/main.py
+          python -m py_compile backend/app/api/upload.py
+          python -m py_compile backend/app/services/embedding_service.py
+          python -m py_compile backend/app/services/llm_service.py
+          python -m py_compile backend/app/services/rag_service.py
+
+  test-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+        env:
+          VITE_API_URL: https://document-intelligence-platform-214a.onrender.com
