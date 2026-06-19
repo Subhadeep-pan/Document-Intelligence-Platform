@@ -8,32 +8,17 @@ collection = client.get_or_create_collection(
     name="documents"
 )
 
-
-def store_chunks(
-        chunks,
-        embeddings,
-        doc_id
-):
-
+def store_chunks(chunks, embeddings, doc_id):
     ids = []
-
     metadatas = []
 
     for i in range(len(chunks)):
-
-        ids.append(
-            f"{doc_id}_{i}"
-        )
-
-        metadatas.append(
-            {
-                "doc_id": doc_id
-            }
-        )
+        ids.append(f"{doc_id}_{i}")
+        metadatas.append({"doc_id": doc_id})
 
     collection.add(
         ids=ids,
         documents=chunks,
-        embeddings=embeddings.tolist(),
+        embeddings=embeddings,   # no .tolist() needed anymore
         metadatas=metadatas
     )
